@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OpenClaw — Team Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f4f8;--card:#fff;--primary:#075985;--secondary:#0f766e;--accent:#d97706;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--red:#dc2626;--green:#16a34a;--blue:#2563eb;--gold:#d97706}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'IBM Plex Sans Arabic','Inter',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6}
+.wrap{max-width:1200px;margin:0 auto;padding:20px}
+.head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.head h1{font-size:22px;font-weight:800;display:flex;align-items:center;gap:8px}
+.head h1 span{background:var(--primary);color:#fff;font-size:10px;padding:2px 8px;border-radius:999px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:24px}
+.stat{border:1px solid var(--line);border-radius:14px;background:var(--card);padding:16px}
+.stat .l{font-size:11px;color:var(--muted);font-weight:500;text-transform:uppercase}
+.stat .v{font-size:24px;font-weight:800;margin:2px 0}
+.card{border:1px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden;margin-bottom:16px}
+.ch{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;font-weight:700;font-size:14px}
+.cb{padding:12px 16px}
+.btn{padding:7px 14px;border-radius:9px;border:none;font-weight:600;font-size:12px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:5px}
+.btn-p{background:var(--primary);color:#fff}.btn-p:hover{background:#0369a1}
+.btn-d{background:var(--red);color:#fff}.btn-d:hover{background:#b91c1c}
+.btn-o{background:transparent;border:1px solid var(--line);color:var(--ink)}.btn-o:hover{background:var(--bg)}
+.btn-sm{padding:4px 9px;font-size:11px}
+.tag{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;background:var(--bg);border:1px solid var(--line);border-radius:7px;font-size:11px}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:600}
+.b-g{background:#dcfce7;color:#166534}
+.b-b{background:#dbeafe;color:#1e40af}
+.b-r{background:#fee2e2;color:#991b1b}
+.b-y{background:#fef9c3;color:#854d0e}
+.mr{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.mr:last-child{border-bottom:none}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;color:#fff}
+.empty{color:var(--muted);font-size:13px;padding:12px 0}
+.gap{display:flex;gap:8px;flex-wrap:wrap}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin:8px 0 2px}
+input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:12px;outline:none;font-family:inherit}
+input:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(7,89,133,.08)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center;padding:16px}
+.modal.o{display:flex}
+.mb{background:var(--card);border-radius:18px;padding:20px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto}
+.mb h3{font-size:16px;font-weight:700;margin-bottom:12px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);padding:10px 18px;border-radius:10px;color:#fff;font-weight:600;z-index:200;display:none;box-shadow:0 6px 24px rgba(0,0,0,.15);font-size:12px}
+.ts{background:var(--green)}.te{background:var(--red)}
+.tabs{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--line)}
+.tab{padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s}
+.tab:hover{color:var(--ink)}.tab.act{color:var(--primary);border-bottom-color:var(--primary)}
+.web{margin:6px 0}
+.web-l{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:2px}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:6px;font-size:10px;font-weight:600}
+.cdel{color:var(--red);cursor:pointer;font-weight:700;font-size:13px;margin-left:2px;opacity:.7}
+.cdel:hover{opacity:1}
+.info{background:#f0f9ff;border:1px solid #bae6fd;border-radius:9px;padding:8px 10px;font-size:11px;color:#1e40af;margin:6px 0}
+@media(max-width:768px){.g2,.g3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="head">
+  <h1>🤖 <span>Team</span>Hub</h1>
+  <div class="gap">
+    <button class="btn btn-p" onclick="addMember()">👤 + عضو</button>
+    <button class="btn btn-o" onclick="addGroup()">📋 مجموعة</button>
+    <button class="btn btn-o" onclick="addAgent()">🤖 وكيل</button>
+    <button class="btn btn-o" onclick="settings()">⚙️</button>
+    <button class="btn btn-sm btn-o" onclick="refresh()">🔄</button>
+  </div>
+</div>
+
+<div class="stats" id="stats"></div>
+<div class="tabs" id="tabs">
+  <button class="tab act" data-tab="team" onclick="sw(this)">👥 الفريق</button>
+  <button class="tab" data-tab="groups" onclick="sw(this)">📋 المجموعات</button>
+  <button class="tab" data-tab="agents" onclick="sw(this)">🤖 الوكلاء</button>
+  <button class="tab" data-tab="channels" onclick="sw(this)">📡 القنوات</button>
+  <button class="tab" data-tab="models" onclick="sw(this)">🧠 النماذج</button>
+</div>
+
+<div id="tab-team" class="tab-content"></div>
+<div id="tab-groups" class="tab-content h"></div>
+<div id="tab-agents" class="tab-content h"></div>
+<div id="tab-channels" class="tab-content h"></div>
+<div id="tab-models" class="tab-content h"></div>
+</div>
+
+<div class="modal" id="modal"><div class="mb"><h3 id="mt">إضافة</h3><div id="mb"></div><div class="gap mt" style="justify-content:flex-end;margin-top:14px"><button class="btn btn-o" onclick="cm()">إلغاء</button><button class="btn btn-p" id="mc">حفظ</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+let C={};let S={activeTab:'team'};
+
+async function api(p,o={}){const r=await fetch(p,{headers:{'Content-Type':'application/json',...o.headers},...o});if(!r.ok){const e=await r.json().catch(()=>({error:r.statusText}));throw new Error(e.error||r.statusText)}return r.json().catch(()=>({}))}
+function $t(m,t='s'){const e=document.getElementById('toast');e.textContent=m;e.className='toast '+(t==='s'?'ts':'te');e.style.display='block';setTimeout(()=>e.style.display='none',3500)}
+function cm(){document.getElementById('modal').classList.remove('o')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')cm()});
+
+function sw(el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));
+  el.classList.add('act');
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.add('h'));
+  document.getElementById('tab-'+el.dataset.tab).classList.remove('h');
+}
+
+async function refresh(){try{C=await api('/api/config');renderStats();renderTeam();renderGroups();renderAgents();renderChannels();renderModels()}catch(e){$t(e.message,'e')}}
+
+function chIcon(n){const m={whatsapp:'💬',telegram:'✈️',discord:'🎮',signal:'🔒',slack:'💼',webchat:'🌐',googlechat:'💭',matrix:'💬',irc:'🔌',line:'💚',msteams:'💠'};return m[n]||'📡'}
+function isElev(ch,id){const e=C.tools?.elevated?.allowFrom||{};return e[ch]?.includes(id)||false}
+function getPerm(id){const p=C._userPerms||{};return p[id]||{role:'',can:'محادثة، بحث',cant:''}}
+function avatarColor(id){let h=0;for(let i=0;i<id.length;i++)h=((h<<5)-h)+id.charCodeAt(i);return'#'+Math.abs(h).toString(16).substring(0,6)}
+
+// ===== STATS =====
+function renderStats(){
+  const chs=C.channels||{};const ag=C.accessGroups||{};const al=C.agents?.list||[];const def=C.agents?.defaults||{};
+  let users=0;for(const g of Object.values(ag))for(const ids of Object.values(g.members||{}))users+=ids.length;
+  const eus=Object.values(C.tools?.elevated?.allowFrom||{}).reduce((s,a)=>s+a.length,0);
+  const totalAgents=al.length+1;
+  document.getElementById('stats').innerHTML=`
+    <div class="stat"><div class="l">📡 القنوات</div><div class="v">${Object.keys(chs).length}</div><div class="s">${Object.keys(chs).join('، ')||'—'}</div></div>
+    <div class="stat"><div class="l">👥 الأعضاء</div><div class="v">${users}</div><div class="s">${eus} 🛡️ بصلاحية كاملة</div></div>
+    <div class="stat"><div class="l">🤖 الوكلاء</div><div class="v">${totalAgents}</div><div class="s">${def.model?.primary||'—'}</div></div>
+    <div class="stat"><div class="l">🔒 النطاق</div><div class="v">${C.tools?.profile||'full'}</div><div class="s">${C.tools?.deny?.length||0} ممنوع</div></div>`;
+}
+
+// ===== TEAM TAB =====
+function renderTeam(){
+  const ag=C.accessGroups||{};let allMembers=[];
+  for(const[gn,g]of Object.entries(ag)){
+    for(const[ch,ids]of Object.entries(g.members||{})){
+      for(const id of ids){
+        allMembers.push({id,ch,gn,el:isElev(ch,id),perms:getPerm(id)});
+      }
+    }
+  }
+  const uniqMembers=[...new Map(allMembers.map(m=>[m.id,m])).values()];
+  let h='';const elCount=new Set(allMembers.filter(m=>m.el).map(m=>m.id)).size;
+  document.querySelector('#tabs button[data-tab="team"]').textContent=`👥 الفريق (${uniqMembers.length})`;
+  document.querySelector('#tabs button[data-tab="groups"]').textContent=`📋 المجموعات (${Object.keys(ag).length})`;
+
+  if(!uniqMembers.length){document.getElementById('tab-team').innerHTML='<div class="card"><div class="cb"><div class="empty">لا يوجد أعضاء بعد. أضف عضو من زر "👤 + عضو"</div></div></div>';return}
+
+  for(const m of uniqMembers){
+    const role=m.perms.role||'عضو';
+    const isAdmin=m.el;
+    h+=`<div class="mr" style="padding:10px 0">
+      <div class="av" style="background:${avatarColor(m.id)}">${m.id.slice(-4)}</div>
+      <div style="flex:1;min-width:130px">
+        <div style="font-weight:600;font-size:13px">${m.id}</div>
+        <div style="font-size:10px;color:var(--muted)">${chIcon(m.ch)} ${m.gn}</div>
+      </div>
+      <div class="gap">
+        <span class="badge ${isAdmin?'b-r':'b-y'}" style="display:flex;align-items:center;gap:3px">${isAdmin?'🛡️ مالك':'👤 عضو'}</span>
+        ${role!=='عضو'?`<span class="badge b-b">${role}</span>`:''}
+      </div>
+      <div style="width:100%;font-size:11px;color:var(--muted);padding-right:44px">
+        <span style="color:var(--green)">✅ ${m.perms.can||'محادثة، بحث، استعلام'}</span>
+        ${m.perms.cant?`<span style="color:var(--red);margin-right:8px">⛔ ${m.perms.cant}</span>`:''}
+        ${!isAdmin?`<span style="color:var(--red);margin-right:8px">⛔ حذف ملفات، تشغيل أوامر</span>`:''}
+      </div>
+      <div class="gap" style="width:100%;padding-right:44px">
+        <button class="btn btn-sm btn-o" onclick="editPerms('${m.id}')">⚙️ صلاحيات</button>
+        ${m.el?`<button class="btn btn-sm btn-d" onclick="toggleElev('${m.ch}','${m.id}',false)">🔻 خفض الصلاحية</button>`:`<button class="btn btn-sm btn-o" onclick="toggleElev('${m.ch}','${m.id}',true)">🛡️ رفع الصلاحية</button>`}
+        <button class="btn btn-sm btn-d" onclick="delMember('${m.id}')">🗑️</button>
+      </div>
+    </div>`;
+  }
+  document.getElementById('tab-team').innerHTML=`<div class="card"><div class="ch">👥 الفريق <span style="font-weight:400;font-size:12px;color:var(--muted)">${uniqMembers.length} عضو — ${elCount} بصلاحية كاملة</span></div><div class="cb">${h}</div></div>`;
+}
+
+// ===== GROUPS TAB =====
+function renderGroups(){
+  const ag=C.accessGroups||{};let h='';
+  for(const[n,g]of Object.entries(ag)){
+    const m=g.members||{};const tot=Object.values(m).reduce((s,mm)=>s+mm.length,0);
+    const perms=g.permissions||{};
+    h+=`<div class="card"><div class="ch">📋 ${n}<div class="gap"><span class="badge b-b">${tot} عضو</span><button class="btn btn-sm btn-d" onclick="delGroup('${n}')">🗑️</button></div></div>
+      <div class="cb">`;
+    if(Object.keys(m).length){
+      for(const[ch,ids]of Object.entries(m)){
+        for(const id of ids){
+          const p=perms[ch+':'+id]||{};
+          h+=`<div class="mr">
+            <div class="av" style="background:${avatarColor(id)};width:28px;height:28px;font-size:10px">${id.slice(-3)}</div>
+            <div style="flex:1"><span style="font-weight:600">${id}</span> <span style="color:var(--muted);font-size:11px">${chIcon(ch)}</span></div>
+            ${p.role?`<span class="badge b-b">${p.role}</span>`:''}
+            <span class="cdel" onclick="rmMember('${n}','${ch}','${id}')">×</span>
+          </div>`;
+        }
+      }
+    } else { h+='<div class="empty">لا يوجد أعضاء</div>'; }
+    h+=`<button class="btn btn-sm btn-o mt" onclick="addToGroup('${n}')">+ إضافة عضو</button></div></div>`;
+  }
+  if(!h)h='<div class="empty">لا توجد مجموعات. أنشئ مجموعة من زر "📋 مجموعة"</div>';
+  document.getElementById('tab-groups').innerHTML=h;
+}
+
+// ===== AGENTS TAB =====
+function renderAgents(){
+  const al=C.agents?.list||[];const d=C.agents?.defaults||{};
+  let h=`<div class="card" style="border-color:var(--primary)"><div class="ch">🟦 main <span class="badge b-b">افتراضي</span></div><div class="cb">
+    <div class="g2"><div><span class="web-l">النموذج</span><div class="tag">${d.model?.primary||'—'}</div></div>
+    <div><span class="web-l">نظام الصلاحيات</span><div class="tag">${C.tools?.profile||'full'}</div></div></div>
+    <div style="margin-top:8px"><span class="web-l">الفشل الاحتياطي</span><div class="tag">${(d.model?.fallbacks||[]).join('، ')||'—'}</div></div>
+  </div></div>`;
+  for(const a of al){
+    h+=`<div class="card"><div class="ch">🟢 ${a.id}<div class="gap"><span class="badge b-y">مخصص</span><button class="btn btn-sm btn-d" onclick="delAgent('${a.id}')">🗑️</button></div></div>
+      <div class="cb"><div class="g2">
+        <div><span class="web-l">المهارات</span><div class="gap">${a.skills?a.skills.map(s=>`<span class="tag">${s}</span>`).join(''):'<span class="tag">جميع المهارات</span>'}</div></div>
+        <div><span class="web-l">الأدوات</span><div class="gap">${a.tools?.allow?a.tools.allow.map(s=>`<span class="tag b-b">${s}</span>`).join(''):'<span class="tag">كل الأدوات</span>'}</div></div>
+      </div></div></div>`;
+  }
+  if(!al.length)h+=`<div class="card"><div class="cb"><div class="empty">ما في وكلاء إضافيين. أضف وكيل لتفعيل صلاحيات مختلفة لأعضاء مختلفين.</div></div></div>`;
+  document.getElementById('tab-agents').innerHTML=h;
+}
+
+// ===== CHANNELS TAB =====
+function renderChannels(){
+  const chs=C.channels||{};let h='';
+  for(const[n,c]of Object.entries(chs)){
+    h+=`<div class="card"><div class="ch">${chIcon(n)} ${n}<div class="gap"><span class="badge ${c.enabled!==false?'b-g':'b-r'}">${c.enabled!==false?'نشط':'معطل'}</span></div></div>
+      <div class="cb"><div class="g2">
+        <div><span class="web-l">السياسة</span><div class="tag">${c.dmPolicy||'open'}</div></div>
+        <div><span class="web-l">الحسابات</span><div class="tag">${Object.keys(c.accounts||{}).length||'واحد'}</div></div>
+      </div>
+      ${c.allowFrom?.length?`<div style="margin-top:6px"><span class="web-l">المسموح لهم بالمراسلة</span><div class="gap">${c.allowFrom.map(s=>`<span class="tag ${s.startsWith('accessGroup:')?'b-b':''}">${s}</span>`).join('')}</div></div>`:''}
+      <div style="margin-top:8px" class="gap">
+        <button class="btn btn-sm btn-o" onclick="toggleCh('${n}')">${c.enabled!==false?'🔴 تعطيل':'🟢 تفعيل'}</button>
+        <button class="btn btn-sm btn-d" onclick="delCh('${n}')">🗑️ حذف القناة</button>
+      </div></div></div>`;
+  }
+  if(!h)h='<div class="card"><div class="cb"><div class="empty">لا توجد قنوات. استخدم openclaw channels add لإضافة قناة.</div></div></div>';
+  document.getElementById('tab-channels').innerHTML=h;
+}
+
+// ===== MODELS TAB =====
+function renderModels(){
+  const ms=C.agents?.defaults?.models||{};let h='<div class="card"><div class="ch">🧠 النماذج المثبتة</div><div class="cb">';
+  for(const[k,v]of Object.entries(ms)){
+    h+=`<div class="mr"><div class="tag" style="direction:ltr;text-align:left">${k}</div>${v.alias?`<span class="badge b-b">${v.alias}</span>`:''}</div>`;
+  }
+  h+=`</div></div>
+  <div class="card"><div class="ch">➕ إضافة نموذج</div><div class="cb">
+    <div style="margin-bottom:6px"><input id="newModel" placeholder="deepseek/deepseek-v4-pro" style="direction:ltr"></div>
+    <div class="gap"><button class="btn btn-sm btn-p" onclick="addModel()">إضافة</button>
+    <button class="btn btn-sm btn-o" onclick="showModelPresets()">📋 نماذج مقترحة</button></div>
+  </div></div>`;
+  document.getElementById('tab-models').innerHTML=h;
+}
+function showModelPresets(){
+  document.getElementById('mt').textContent='📋 نماذج مقترحة';
+  document.getElementById('mb').innerHTML='<div class="gap">'+
+    ['deepseek/deepseek-v4-pro','deepseek/deepseek-v4-flash','openai/gpt-5.5','openai/gpt-5.4-mini','anthropic/claude-sonnet-4-6','google/gemini-3-flash-preview']
+    .map(m=>`<div style="padding:8px;border:1px solid var(--line);border-radius:9px;cursor:pointer;font-size:12px;direction:ltr;text-align:left" onclick="pickModel('${m}')">${m}</div>`).join('')+'';
+  document.getElementById('mc').style.display='none';openModal();
+}
+function pickModel(m){document.getElementById('newModel').value=m;cm();}
+async function addModel(){
+  const m=document.getElementById('newModel').value.trim();if(!m)return $t('أدخل اسم النموذج','e');
+  await api('/api/config',{method:'PATCH',body:JSON.stringify({agents:{defaults:{models:{[m]:{}}}}})});
+  $t('✅ تم إضافة '+m);refresh()
+}
+
+// ===== ACTIONS =====
+async function toggleCh(n){const c=C.channels[n];await api('/api/config/channels/'+n,{method:'POST',body:JSON.stringify({enabled:!c.enabled})});$t('تم');refresh()}
+async function delCh(n){if(!confirm('حذف القناة '+n+'?'))return;await api('/api/config/channels/'+n,{method:'DELETE'});$t('تم');refresh()}
+
+function addMember(){
+  document.getElementById('mt').textContent='👤 إضافة عضو جديد';
+  const chs=Object.keys(C.channels||{});
+  const grps=Object.keys(C.accessGroups||{});
+  document.getElementById('mb').innerHTML=`
+    <label>المعرف (رقم الهاتف للواتساب)</label>
+    <input id="fmid" placeholder="+966501234567" style="direction:ltr">
+    <label>القناة</label>
+    <select id="fmch">${chs.map(c=>`<option value="${c}">${c} ${chIcon(c)}</option>`).join('')}</select>
+    <label>مجموعة الوصول</label>
+    <select id="fmgr"><option value="">إنشاء مجموعة جديدة</option>${grps.map(g=>`<option value="${g}">${g}</option>`).join('')}</select>
+    <label>أو اسم مجموعة جديدة</label>
+    <input id="fmgrn" placeholder="مثلاً: team-leads">
+    <label>الدور/المسمى</label>
+    <input id="fmrole" placeholder="مثلاً: مدير قسم، مستشار قانوني">
+    <div style="margin-top:6px;display:flex;align-items:center;gap:8px">
+      <input type="checkbox" id="fmel" style="width:auto">
+      <label style="margin:0;font-size:11px">🛡️ صلاحية كاملة (يمكنه رفع ملفات وتشغيل أوامر)</label>
+    </div>
+    <div class="info">للصلاحية الكاملة: يمكنه إدارة الإعدادات وتشغيل الأوامر. بدونها: محادثة وبحث فقط.</div>`;
+  document.getElementById('mc').onclick=async()=>{
+    const id=document.getElementById('fmid').value.trim();if(!id)return $t('أدخل المعرف','e');
+    const ch=document.getElementById('fmch').value;
+    const grp=document.getElementById('fmgr').value||document.getElementById('fmgrn').value.trim()||'فريق';
+    const role=document.getElementById('fmrole').value.trim();
+    const el=document.getElementById('fmel').checked;
+    await api('/api/config/access-groups',{method:'POST',body:JSON.stringify({name:grp,type:'message.senders'})}).catch(()=>{});
+    await api('/api/config/access-groups/'+grp+'/members',{method:'POST',body:JSON.stringify({channel:ch,id})});
+    if(el) await api('/api/config',{method:'PATCH',body:JSON.stringify({tools:{elevated:{enabled:true,allowFrom:{[ch]:[id]}}}})});
+    if(role) await api('/api/config',{method:'PATCH',body:JSON.stringify({accessGroups:{[grp]:{permissions:{[ch+':'+id]:{role,can:'محادثة، بحث، استعلام',cant:el?'':'حذف ملفات، تشغيل أوامر'}}}}}})});
+    // Add to channel allowFrom
+    await api('/api/config/channels/'+ch+'/allow-from',{method:'POST',body:JSON.stringify({sender:'accessGroup:'+grp})});
+    cm();$t('✅ تمت إضافة '+id);refresh()
+  };openModal()
+}
+
+function addGroup(){
+  document.getElementById('mt').textContent='📋 مجموعة جديدة';
+  document.getElementById('mb').innerHTML='<label>اسم المجموعة</label><input id="fgn" placeholder="مثلاً: مدیرون"><label>الوصف</label><input id="fgd" placeholder="مثلاً: فريق الإدارة العليا">';
+  document.getElementById('mc').onclick=async()=>{
+    const n=document.getElementById('fgn').value.trim();if(!n)return $t('أدخل اسم','e');
+    await api('/api/config/access-groups',{method:'POST',body:JSON.stringify({name:n})});cm();$t('✅ تم');refresh()
+  };openModal()
+}
+
+function addToGroup(gn){
+  document.getElementById('mt').textContent='➕ إضافة إلى '+gn;
+  const chs=Object.keys(C.channels||{});
+  document.getElementById('mb').innerHTML='<label>القناة</label><select id="fgch">'+chs.map(c=>`<option value="${c}">${c}</option>`).join('')+'</select><label>المعرف</label><input id="fgid" placeholder="+966501234567" style="direction:ltr"><div class="info">يمكن إضافة عدة مستخدمين بتكرار العملية</div>';
+  document.getElementById('mc').onclick=async()=>{
+    const ch=document.getElementById('fgch').value;const id=document.getElementById('fgid').value.trim();if(!id)return $t('أدخل المعرف','e');
+    await api('/api/config/access-groups/'+gn+'/members',{method:'POST',body:JSON.stringify({channel:ch,id})});cm();$t('✅ تم');refresh()
+  };openModal()
+}
+
+async function rmMember(gn,ch,id){if(!confirm('إزالة '+id+' من '+gn+'?'))return;await api('/api/config/access-groups/'+gn+'/members/'+ch+'/'+encodeURIComponent(id),{method:'DELETE'});$t('تم');refresh()}
+async function delGroup(n){if(!confirm('حذف المجموعة '+n+'?'))return;await api('/api/config/access-groups/'+n,{method:'DELETE'});$t('تم');refresh()}
+
+function editPerms(id){
+  let found=null;for(const[gn,g]of Object.entries(C.accessGroups||{}))for(const[ch,ids]of Object.entries(g.members||{}))if(ids.includes(id)){found={gn,ch,id,g};break}
+  if(!found)return $t('ما لقيت العضو','e');
+  document.getElementById('mt').textContent='⚙️ صلاحيات '+id;
+  const p=C._userPerms?.[id]||{};const el=isElev(found.ch,id);
+  document.getElementById('mb').innerHTML=`
+    <label>الدور</label><input id="perRole" value="${p.role||''}" placeholder="مدير قسم">
+    <label>✅ مسموح له</label><input id="perCan" value="${p.can||'محادثة، بحث، استعلام'}" placeholder="محادثة، بحث">
+    <label>⛔ غير مسموح</label><input id="perCant" value="${p.cant||''}" placeholder="حذف ملفات، تشغيل أوامر">
+    <div style="margin-top:8px;display:flex;align-items:center;gap:8px">
+      <input type="checkbox" id="perEl" ${el?'checked':''} style="width:auto">
+      <label style="margin:0;font-size:12px">🛡️ صلاحية كاملة (رفع ملفات، تشغيل أوامر، حذف)</label>
+    </div>`;
+  document.getElementById('mc').onclick=async()=>{
+    const role=document.getElementById('perRole').value.trim();
+    const can=document.getElementById('perCan').value.trim();
+    const cant=document.getElementById('perCant').value.trim();
+    const newEl=document.getElementById('perEl').checked;
+    // Save permissions metadata
+    if(!C._userPerms)C._userPerms={};
+    if(!C._userPerms[id])C._userPerms[id]={};
+    C._userPerms[id]={role,can,cant};
+    // Save to config as access group permissions
+    const key=found.ch+':'+id;
+    await api('/api/config',{method:'PATCH',body:JSON.stringify({accessGroups:{[found.gn]:{permissions:{[key]:{role,canDo:can,cannotDo:cant}}}}})});
+    // Toggle elevated
+    const e=C.tools?.elevated||{enabled:true,allowFrom:{}};
+    if(!e.allowFrom[found.ch]) e.allowFrom[found.ch]=[];
+    if(newEl&&!e.allowFrom[found.ch].includes(id)) e.allowFrom[found.ch].push(id);
+    if(!newEl) e.allowFrom[found.ch]=e.allowFrom[found.ch].filter(x=>x!==id);
+    await api('/api/config',{method:'PATCH',body:JSON.stringify({tools:{elevated:e}})});
+    cm();$t('✅ تم حفظ الصلاحيات');refresh()
+  };openModal()
+}
+
+async function toggleElev(ch,id,val){
+  const e=C.tools?.elevated||{enabled:true,allowFrom:{}};
+  if(!e.allowFrom[ch]) e.allowFrom[ch]=[];
+  if(val&&!e.allowFrom[ch].includes(id)) e.allowFrom[ch].push(id);
+  if(!val) e.allowFrom[ch]=e.allowFrom[ch].filter(x=>x!==id);
+  await api('/api/config',{method:'PATCH',body:JSON.stringify({tools:{elevated:e}})});
+  $t(val?'🛡️ تم رفع الصلاحية':'🔻 تم خفض الصلاحية');refresh()
+}
+
+async function delMember(id){
+  if(!confirm('إزالة '+id+' من كل المجموعات؟'))return;
+  for(const[gn,g]of Object.entries(C.accessGroups||{})){
+    for(const[ch,ids]of Object.entries(g.members||{})){
+      if(ids.includes(id)){
+        await api('/api/config/access-groups/'+gn+'/members/'+ch+'/'+encodeURIComponent(id),{method:'DELETE'});
+      }
+    }
+  }
+  // Also remove from elevated
+  const e=C.tools?.elevated||{};
+  for(const[ch,ids]of Object.entries(e.allowFrom||{})){
+    if(ids.includes(id)){
+      e.allowFrom[ch]=ids.filter(x=>x!==id);
+      await api('/api/config',{method:'PATCH',body:JSON.stringify({tools:{elevated:e}})});
+    }
+  }
+  $t('تم الحذف');refresh()
+}
+
+function addAgent(){
+  document.getElementById('mt').textContent='🤖 إضافة وكيل جديد';
+  document.getElementById('mb').innerHTML=`
+    <label>المعرف (id)</label><input id="fai" placeholder="restricted" style="direction:ltr">
+    <label>الأدوات الممنوعة</label><input id="fadeny" placeholder="group:fs, group:runtime" style="direction:ltr">
+    <div class="info">منع group:fs و group:runtime يمنع الوكيل من تعديل وحذف الملفات وتشغيل الأوامر</div>`;
+  document.getElementById('mc').onclick=async()=>{
+    const id=document.getElementById('fai').value.trim();if(!id)return $t('أدخل المعرف','e');
+    const deny=document.getElementById('fadeny').value.split(',').map(s=>s.trim()).filter(Boolean);
+    const body={id};if(deny.length)body.tools={deny};
+    await api('/api/agents',{method:'POST',body:JSON.stringify(body)});cm();$t('✅ تم إنشاء '+id);refresh()
+  };openModal()
+}
+async function delAgent(id){if(!confirm('حذف الوكيل '+id+'?'))return;await api('/api/agents/'+id,{method:'DELETE'});$t('تم');refresh()}
+
+function settings(){
+  document.getElementById('mt').textContent='⚙️ إعدادات النظام';
+  const t=C.tools||{};
+  document.getElementById('mb').innerHTML=`
+    <label>نظام الصلاحيات (Tools Profile)</label>
+    <select id="sfp" onchange="saveSettings()">
+      <option value="full" ${t.profile==='full'?'selected':''}>full — بدون قيود</option>
+      <option value="coding" ${t.profile==='coding'?'selected':''}>coding — آمن (برمجة)</option>
+      <option value="minimal" ${t.profile==='minimal'?'selected':''}>minimal — أساسي</option>
+      <option value="messaging" ${t.profile==='messaging'?'selected':''}>messaging — مراسلة</option>
+    </select>
+    <div style="margin-top:12px" class="info">⚠️ تغيير نظام الصلاحيات يؤثر على جميع المستخدمين.</div>`;
+  document.getElementById('mc').style.display='none';openModal()
+}
+async function saveSettings(){
+  const v=document.getElementById('sfp').value;
+  await api('/api/config',{method:'PATCH',body:JSON.stringify({tools:{profile:v}})});
+  $t('✅ تم');refresh()
+}
+
+// ===== INIT =====
+refresh();
+document.getElementById('newModel')?.addEventListener('keydown',e=>{if(e.key==='Enter')addModel()});
+</script>
+</body>
+</html>
